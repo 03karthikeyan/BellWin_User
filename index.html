@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --gold:#C9A84C;
+    --gold-light:#E8C97A;
+    --gold-pale:#FDF6E3;
+    --gold-dark:#A07830;
+    --emerald:#1A5C3A;
+    --emerald-mid:#2D7A52;
+    --emerald-light:#3D9968;
+    --emerald-pale:#E8F5EE;
+    --cream:#FDFAF4;
+    --white:#FFFFFF;
+    --dark:#1A1A2E;
+    --dark2:#2D2D44;
+    --gray:#6B7280;
+    --gray-light:#F3F4F6;
+    --gray-border:#E5E7EB;
+    --red:#DC2626;
+    --font-serif:'Playfair Display',serif;
+    --font-sans:'DM Sans',sans-serif;
+    --r-sm:8px;
+    --r-md:12px;
+    --r-lg:16px;
+    --r-xl:20px;
+    --r-full:50px;
+  }
+  body{font-family:var(--font-sans);background:#1A1A2E;display:flex;flex-direction:column;align-items:center;padding:20px;min-height:100vh;color:var(--dark)}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+  .app-wrapper{display:flex;flex-direction:column;align-items:center;gap:32px;width:100%;max-width:400px}
+  .section-label{color:#C9A84C;font-family:var(--font-serif);font-size:13px;letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:4px}
+  
+  .phone{
+    width:375px;border-radius:40px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 0 2px #C9A84C,inset 0 0 0 1px rgba(255,255,255,0.1);
+    position:relative;background:var(--cream)
+  }
+  .status-bar{
+    background:var(--dark);padding:12px 20px 8px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;color:#fff;font-weight:500
+  }
+  .status-bar .time{font-weight:600;font-size:14px}
+  .status-icons{display:flex;gap:6px;align-items:center;font-size:11px}
+
+  /* ===== SPLASH ===== */
+  .splash{background:linear-gradient(160deg,#1A1A2E 0%,#1A3A2A 50%,#0D2818 100%);padding:60px 30px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:580px;position:relative;overflow:hidden}
+  .splash::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%)}
+  .splash::after{content:'';position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(45,122,82,0.2) 0%,transparent 70%)}
+  .splash-logo{width:90px;height:90px;background:linear-gradient(135deg,#C9A84C,#E8C97A,#C9A84C);border-radius:24px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 8px 32px rgba(201,168,76,0.4)}
+  .splash-logo i{font-size:42px;color:#1A3A2A}
+  .splash-brand{font-family:var(--font-serif);font-size:30px;font-weight:700;color:#C9A84C;text-align:center;line-height:1.2}
+  .splash-tagline{color:rgba(232,201,122,0.6);font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-top:8px;text-align:center}
+  .splash-loader{margin-top:60px;display:flex;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#C9A84C;opacity:0.3}
+  .dot:nth-child(2){opacity:0.6}
+  .dot:nth-child(3){opacity:1}
+  .dot:nth-child(4){opacity:0.6}
+
+  /* ===== ONBOARDING ===== */
+  .onboard{background:var(--cream);padding:0;min-height:580px;display:flex;flex-direction:column}
+  .onboard-top{background:linear-gradient(135deg,#1A3A2A,#2D5A3A);flex:1;display:flex;align-items:center;justify-content:center;padding:40px;border-radius:0 0 40px 40px;min-height:280px;position:relative;overflow:hidden}
+  .onboard-illo{font-size:80px;color:rgba(201,168,76,0.9);text-align:center}
+  .onboard-illo2{font-size:80px;display:flex;gap:10px;justify-content:center}
+  .onboard-bottom{padding:32px 24px 28px}
+  .onboard-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
+  .odot{width:8px;height:8px;border-radius:4px;background:var(--gray-border)}
+  .odot.active{width:24px;background:var(--gold)}
+  .onboard-title{font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--dark);margin-bottom:10px;line-height:1.3}
+  .onboard-desc{color:var(--gray);font-size:14px;line-height:1.6;margin-bottom:28px}
+  .btn-primary{background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#1A1A2E;border:none;border-radius:var(--r-full);padding:14px 32px;font-size:15px;font-weight:600;font-family:var(--font-sans);cursor:pointer;width:100%;box-shadow:0 4px 20px rgba(201,168,76,0.35)}
+  .btn-outline{background:transparent;color:var(--emerald);border:1.5px solid var(--emerald);border-radius:var(--r-full);padding:12px 32px;font-size:14px;font-weight:500;font-family:var(--font-sans);cursor:pointer;width:100%;margin-top:10px}
+
+  /* ===== LOGIN ===== */
+  .login-screen{background:var(--cream);padding:0;min-height:620px}
+  .login-top{background:linear-gradient(160deg,#1A1A2E,#1A3A2A);padding:40px 24px 50px;border-radius:0 0 40px 40px;text-align:center}
+  .login-logo-sm{width:56px;height:56px;background:linear-gradient(135deg,#C9A84C,#E8C97A);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .login-logo-sm i{font-size:26px;color:#1A3A2A}
+  .login-top h3{font-family:var(--font-serif);font-size:22px;color:#E8C97A;margin-bottom:4px}
+  .login-top p{color:rgba(255,255,255,0.5);font-size:13px}
+  .login-form{padding:28px 24px}
+  .form-group{margin-bottom:16px}
+  .form-label{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block}
+  .form-input{width:100%;border:1.5px solid var(--gray-border);border-radius:var(--r-md);padding:12px 16px;font-size:14px;font-family:var(--font-sans);background:#fff;color:var(--dark);outline:none}
+  .form-input.focused{border-color:var(--gold)}
+  .input-row{display:flex;gap:10px}
+  .input-row .form-input{flex:1}
+  .btn-otp{background:var(--emerald);color:#fff;border:none;border-radius:var(--r-md);padding:12px 16px;font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer;white-space:nowrap}
+  .divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+  .divider span{color:var(--gray);font-size:12px}
+  .divider-line{flex:1;height:1px;background:var(--gray-border)}
+  .btn-link{background:transparent;border:1.5px solid var(--gold);color:var(--gold-dark);border-radius:var(--r-full);padding:12px 32px;font-size:14px;font-weight:500;font-family:var(--font-sans);cursor:pointer;width:100%;text-align:center}
+
+  /* ===== REGISTRATION ===== */
+  .reg-screen{background:var(--gray-light);min-height:700px}
+  .reg-header{background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:36px 20px 20px;display:flex;align-items:center;gap:14px}
+  .back-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;font-size:16px}
+  .reg-header h3{font-family:var(--font-serif);font-size:19px;color:#E8C97A}
+  .reg-header p{font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px}
+  .reg-body{padding:16px}
+  .section-card{background:#fff;border-radius:var(--r-lg);padding:16px;margin-bottom:14px;border:1px solid var(--gray-border)}
+  .section-title{font-size:13px;font-weight:600;color:var(--emerald);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .section-title i{font-size:15px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .form-group-sm .form-label{font-size:11px;margin-bottom:5px}
+  .form-group-sm .form-input{padding:10px 12px;font-size:13px}
+  .photo-upload{display:flex;flex-direction:column;align-items:center;padding:20px;border:2px dashed var(--gray-border);border-radius:var(--r-md);cursor:pointer;gap:8px}
+  .photo-upload i{font-size:32px;color:var(--gold)}
+  .photo-upload span{font-size:13px;color:var(--gray)}
+
+  /* ===== HOME DASHBOARD ===== */
+  .home-screen{background:var(--gray-light);min-height:700px}
+  .home-header{background:linear-gradient(160deg,#1A1A2E 0%,#1A3A2A 60%,#0D3020 100%);padding:36px 20px 70px;position:relative;overflow:hidden}
+  .home-header::after{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(201,168,76,0.08)}
+  .home-top-row{display:flex;justify-content:space-between;align-items:center}
+  .home-greeting{color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:2px}
+  .home-name{font-family:var(--font-serif);font-size:20px;color:#E8C97A;font-weight:600}
+  .home-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#E8C97A);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#1A1A2E;position:relative}
+  .notif-badge{position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:var(--red);border-radius:50%;border:2px solid #1A3A2A;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:700}
+  .summary-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 16px;margin-top:-48px;position:relative;z-index:10}
+  .summary-card{background:#fff;border-radius:var(--r-lg);padding:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:1px solid var(--gray-border)}
+  .summary-card.gold-accent{border-top:3px solid var(--gold)}
+  .summary-card.green-accent{border-top:3px solid var(--emerald-mid)}
+  .summary-card.red-accent{border-top:3px solid #EF4444}
+  .summary-card.blue-accent{border-top:3px solid #3B82F6}
+  .sc-label{font-size:11px;color:var(--gray);margin-bottom:4px;font-weight:500}
+  .sc-value{font-size:18px;font-weight:700;color:var(--dark);font-family:var(--font-serif)}
+  .sc-sub{font-size:10px;color:var(--gold-dark);margin-top:2px;font-weight:500}
+  .home-section{padding:16px}
+  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .section-header h4{font-size:15px;font-weight:600;color:var(--dark)}
+  .section-header span{font-size:12px;color:var(--gold-dark);font-weight:500}
+  .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  .qa-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+  .qa-icon{width:50px;height:50px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .qa-icon.g1{background:linear-gradient(135deg,#FDF6E3,#F5E6C0);color:#A07830}
+  .qa-icon.g2{background:linear-gradient(135deg,#E8F5EE,#C0E8D0);color:#1A5C3A}
+  .qa-icon.g3{background:linear-gradient(135deg,#EEF2FF,#C7D2FE);color:#4338CA}
+  .qa-icon.g4{background:linear-gradient(135deg,#FFF7ED,#FED7AA);color:#C2410C}
+  .qa-label{font-size:10px;color:var(--gray);font-weight:500;text-align:center}
+  .activity-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-border)}
+  .activity-item:last-child{border-bottom:none}
+  .ai-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .ai-icon.paid{background:#DCFCE7;color:#15803D}
+  .ai-icon.scheme{background:#FEF3C7;color:#B45309}
+  .ai-icon.due{background:#FEE2E2;color:#DC2626}
+  .ai-text{flex:1}
+  .ai-title{font-size:13px;font-weight:600;color:var(--dark)}
+  .ai-sub{font-size:11px;color:var(--gray);margin-top:1px}
+  .ai-amount{font-size:13px;font-weight:700;color:var(--dark)}
+  .due-card{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border:1px solid #FED7AA;border-radius:var(--r-lg);padding:14px;display:flex;align-items:center;gap:12px}
+  .due-icon{width:40px;height:40px;background:#FEF3C7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .due-text h5{font-size:13px;font-weight:700;color:#92400E}
+  .due-text p{font-size:12px;color:#B45309;margin-top:2px}
+  .btn-due-pay{background:var(--gold);color:#fff;border:none;border-radius:var(--r-full);padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto;white-space:nowrap}
+
+  /* BOTTOM NAV */
+  .bottom-nav{background:#fff;border-top:1px solid var(--gray-border);padding:8px 0 12px;display:flex}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px}
+  .nav-item i{font-size:22px;color:var(--gray)}
+  .nav-item span{font-size:10px;color:var(--gray);font-weight:500}
+  .nav-item.active i{color:var(--gold)}
+  .nav-item.active span{color:var(--gold);font-weight:600}
+
+  /* ===== GOLD RATE ===== */
+  .rate-screen{background:var(--gray-light);min-height:680px}
+  .rate-header{background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:36px 20px 24px;display:flex;align-items:center;gap:14px}
+  .rate-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 16px 8px}
+  .rate-card{background:#fff;border-radius:var(--r-lg);padding:16px;border:1px solid var(--gray-border);box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+  .rate-card.featured{background:linear-gradient(135deg,#1A1A2E,#1A3A2A);border:1px solid var(--gold)}
+  .rc-label{font-size:11px;font-weight:500;margin-bottom:8px}
+  .rc-label.dark{color:rgba(255,255,255,0.6)}
+  .rc-label.light{color:var(--gray)}
+  .rc-price{font-family:var(--font-serif);font-size:22px;font-weight:700}
+  .rc-price.gold-text{color:#E8C97A}
+  .rc-price.dark-text{color:var(--dark)}
+  .rc-change{font-size:11px;margin-top:4px;font-weight:600}
+  .rc-change.up{color:#16A34A}
+  .rc-change.down{color:#DC2626}
+  .chart-area{background:#fff;margin:0 16px;border-radius:var(--r-lg);padding:16px;border:1px solid var(--gray-border)}
+  .chart-tabs{display:flex;gap:8px;margin-bottom:16px}
+  .chart-tab{padding:6px 14px;border-radius:var(--r-full);font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-border);color:var(--gray);background:#fff}
+  .chart-tab.active{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .mini-chart{display:flex;align-items:flex-end;gap:4px;height:80px;padding:0 4px}
+  .bar{border-radius:4px 4px 0 0;flex:1;transition:height 0.3s}
+  .bar.gold-bar{background:linear-gradient(to top,#A07830,#E8C97A)}
+  .bar.gold-bar.active-bar{background:linear-gradient(to top,#C9A84C,#F5E6C0)}
+  .chart-labels{display:flex;justify-content:space-between;padding:4px 4px 0;font-size:10px;color:var(--gray)}
+
+  /* ===== SCHEME LIST ===== */
+  .scheme-card{background:#fff;border-radius:var(--r-lg);margin:0 16px 12px;padding:16px;border:1px solid var(--gray-border);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+  .scheme-badge{display:inline-flex;align-items:center;gap:4px;background:var(--emerald-pale);color:var(--emerald);font-size:11px;font-weight:600;padding:3px 10px;border-radius:var(--r-full);margin-bottom:8px}
+  .scheme-name{font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--dark);margin-bottom:6px}
+  .scheme-specs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+  .spec-box{background:var(--gray-light);border-radius:var(--r-sm);padding:8px;text-align:center}
+  .spec-val{font-size:14px;font-weight:700;color:var(--dark)}
+  .spec-key{font-size:10px;color:var(--gray);margin-top:2px}
+  .benefits-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .benefit-tag{background:var(--gold-pale);color:var(--gold-dark);font-size:11px;padding:4px 10px;border-radius:var(--r-full);font-weight:500}
+  .btn-enroll{background:linear-gradient(135deg,#1A5C3A,#2D7A52);color:#fff;border:none;border-radius:var(--r-full);padding:11px 24px;font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer;width:100%}
+
+  /* ===== SCHEME DETAIL ===== */
+  .progress-bar-bg{background:var(--gray-border);border-radius:var(--r-full);height:8px;overflow:hidden;margin-bottom:4px}
+  .progress-bar-fill{height:100%;border-radius:var(--r-full);background:linear-gradient(to right,#C9A84C,#E8C97A)}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .detail-box{background:var(--gray-light);border-radius:var(--r-md);padding:12px}
+  .detail-box .key{font-size:11px;color:var(--gray);margin-bottom:4px}
+  .detail-box .val{font-size:14px;font-weight:700;color:var(--dark)}
+  .detail-box .val.highlight{color:var(--emerald)}
+  .btn-row{display:flex;gap:10px}
+  .btn-half{flex:1;border-radius:var(--r-full);padding:12px;font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer;text-align:center;border:none}
+  .btn-pay{background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#1A1A2E}
+  .btn-dl{background:transparent;border:1.5px solid var(--emerald)!important;color:var(--emerald)}
+
+  /* ===== PAYMENT ===== */
+  .pay-method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .pm-card{background:#fff;border:1.5px solid var(--gray-border);border-radius:var(--r-md);padding:14px;text-align:center;cursor:pointer}
+  .pm-card.selected{border-color:var(--gold);background:var(--gold-pale)}
+  .pm-icon{font-size:24px;margin-bottom:6px;display:block}
+  .pm-label{font-size:12px;font-weight:600;color:var(--dark)}
+
+  /* ===== RECEIPT ===== */
+  .receipt-card{background:#fff;border-radius:var(--r-xl);margin:0 16px;padding:0;overflow:hidden;border:1px solid var(--gray-border);box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+  .receipt-top{background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:24px 20px;text-align:center}
+  .receipt-check{width:56px;height:56px;background:linear-gradient(135deg,#C9A84C,#E8C97A);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;color:#1A1A2E}
+  .receipt-top h3{font-family:var(--font-serif);font-size:16px;color:#E8C97A;margin-bottom:4px}
+  .receipt-top p{color:rgba(255,255,255,0.5);font-size:12px}
+  .receipt-amount{font-family:var(--font-serif);font-size:32px;font-weight:700;color:#E8C97A;margin:8px 0 2px}
+  .receipt-body{padding:20px}
+  .receipt-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--gray-border)}
+  .receipt-row:last-child{border-bottom:none}
+  .receipt-row .key{font-size:12px;color:var(--gray)}
+  .receipt-row .val{font-size:12px;font-weight:600;color:var(--dark)}
+  .status-pill{display:inline-flex;align-items:center;gap:4px;background:#DCFCE7;color:#15803D;font-size:11px;font-weight:600;padding:3px 10px;border-radius:var(--r-full)}
+  .receipt-actions{display:flex;gap:10px;padding:0 16px 16px}
+  .btn-receipt{flex:1;border-radius:var(--r-full);padding:12px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;border:none;display:flex;align-items:center;justify-content:center;gap:6px}
+  .btn-pdf{background:linear-gradient(135deg,#1A5C3A,#2D7A52);color:#fff}
+  .btn-wa{background:#25D366;color:#fff}
+
+  /* ===== PURCHASE HISTORY ===== */
+  .purchase-item{display:flex;align-items:center;gap:12px;background:#fff;border-radius:var(--r-lg);padding:14px;margin:0 16px 10px;border:1px solid var(--gray-border)}
+  .product-img{width:54px;height:54px;border-radius:var(--r-md);background:linear-gradient(135deg,#FDF6E3,#F5E6C0);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+  .purchase-info{flex:1}
+  .purchase-name{font-size:13px;font-weight:700;color:var(--dark)}
+  .purchase-sub{font-size:11px;color:var(--gray);margin-top:2px}
+  .purchase-weight{font-size:11px;color:var(--emerald);font-weight:600;margin-top:2px}
+  .purchase-right{text-align:right}
+  .purchase-amount{font-size:14px;font-weight:700;color:var(--dark);font-family:var(--font-serif)}
+  .purchase-date{font-size:10px;color:var(--gray);margin-top:2px}
+
+  /* ===== MATURITY ===== */
+  .maturity-hero{background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:28px 20px;text-align:center;border-radius:0 0 40px 40px;margin-bottom:16px;position:relative;overflow:hidden}
+  .maturity-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.4);color:#E8C97A;padding:5px 14px;border-radius:var(--r-full);font-size:12px;font-weight:600;margin-bottom:16px}
+  .maturity-amount{font-family:var(--font-serif);font-size:36px;font-weight:700;color:#E8C97A}
+  .maturity-sub{color:rgba(255,255,255,0.5);font-size:12px;margin-top:4px}
+  .maturity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:14px}
+  .maturity-opt{background:#fff;border:1.5px solid var(--gray-border);border-radius:var(--r-lg);padding:16px;text-align:center;cursor:pointer}
+  .maturity-opt.featured{border-color:var(--gold);background:var(--gold-pale)}
+  .maturity-opt i{font-size:26px;margin-bottom:8px;display:block}
+  .maturity-opt.featured i{color:var(--gold-dark)}
+  .maturity-opt:not(.featured) i{color:var(--emerald)}
+  .maturity-opt span{font-size:12px;font-weight:600;color:var(--dark)}
+
+  /* ===== PROFILE ===== */
+  .profile-hero{background:linear-gradient(160deg,#1A1A2E,#1A3A2A);padding:36px 20px 24px;text-align:center}
+  .profile-avatar-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#E8C97A);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#1A1A2E;margin:0 auto 12px;border:3px solid rgba(201,168,76,0.4)}
+  .profile-name{font-family:var(--font-serif);font-size:20px;color:#E8C97A;margin-bottom:2px}
+  .profile-id{font-size:12px;color:rgba(255,255,255,0.5)}
+  .profile-body{padding:16px}
+  .info-card{background:#fff;border-radius:var(--r-lg);padding:16px;border:1px solid var(--gray-border);margin-bottom:12px}
+  .info-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-border)}
+  .info-row:last-child{border-bottom:none}
+  .info-icon{width:32px;height:32px;border-radius:50%;background:var(--emerald-pale);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--emerald);flex-shrink:0}
+  .info-text .label{font-size:10px;color:var(--gray);font-weight:500}
+  .info-text .value{font-size:13px;font-weight:600;color:var(--dark)}
+  .action-btn{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--gray-border);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px;cursor:pointer;width:100%}
+  .action-btn i.lead{font-size:20px;color:var(--gold);width:28px}
+  .action-btn span{font-size:14px;font-weight:500;color:var(--dark);flex:1}
+  .action-btn i.arrow{font-size:16px;color:var(--gray)}
+  .action-btn.danger i.lead{color:var(--red)}
+  .action-btn.danger span{color:var(--red)}
+
+  /* SCREEN NAVIGATOR */
+  .nav-strip{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none;width:375px;max-width:100%}
+  .nav-strip::-webkit-scrollbar{display:none}
+  .nav-pill{background:rgba(201,168,76,0.15);color:#C9A84C;border:1.5px solid rgba(201,168,76,0.3);border-radius:var(--r-full);padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--font-sans);flex-shrink:0}
+  .nav-pill.active{background:#C9A84C;color:#1A1A2E;border-color:#C9A84C}
+
+  .screen{display:none}
+  .screen.visible{display:block}
+  
+  .page-label{color:rgba(255,255,255,0.8);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-align:center;font-family:var(--font-serif);margin-bottom:6px}
+</style>
+</head>
+<body>
+<h2 class="sr-only">BellWin Chits Jewellery CRM — Mobile UI Prototype with 14 screens including splash, onboarding, login, registration, dashboard, gold rates, schemes, payments, receipts, purchase history, maturity, and profile.</h2>
+
+<div class="app-wrapper">
+  <div style="text-align:center;padding-top:8px">
+    <div class="section-label">BellWin Chits</div>
+    <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;margin-top:2px">Jewellery CRM — Mobile UI Prototype</div>
+  </div>
+
+  <div class="nav-strip" id="navStrip">
+    <button class="nav-pill active" onclick="showScreen('splash')">Splash</button>
+    <button class="nav-pill" onclick="showScreen('onboard1')">Onboard 1</button>
+    <button class="nav-pill" onclick="showScreen('onboard2')">Onboard 2</button>
+    <button class="nav-pill" onclick="showScreen('onboard3')">Onboard 3</button>
+    <button class="nav-pill" onclick="showScreen('login')">Login</button>
+    <button class="nav-pill" onclick="showScreen('register')">Register</button>
+    <button class="nav-pill" onclick="showScreen('home')">Dashboard</button>
+    <button class="nav-pill" onclick="showScreen('goldrate')">Gold Rate</button>
+    <button class="nav-pill" onclick="showScreen('schemes')">Schemes</button>
+    <button class="nav-pill" onclick="showScreen('schemedetail')">Scheme Detail</button>
+    <button class="nav-pill" onclick="showScreen('payment')">Payment</button>
+    <button class="nav-pill" onclick="showScreen('receipt')">Receipt</button>
+    <button class="nav-pill" onclick="showScreen('purchases')">Purchases</button>
+    <button class="nav-pill" onclick="showScreen('maturity')">Maturity</button>
+    <button class="nav-pill" onclick="showScreen('profile')">Profile</button>
+  </div>
+
+  <!-- ===== SPLASH ===== -->
+  <div class="screen visible" id="s-splash">
+    <div class="page-label">Screen 1 · Splash</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="splash">
+        <div class="splash-logo"><i class="fa-solid fa-gem"></i></div>
+        <div class="splash-brand">BellWin<br>Chits</div>
+        <div class="splash-tagline">Jewellery · Savings · Trust</div>
+        <div style="margin-top:40px;text-align:center">
+          <div style="color:rgba(201,168,76,0.4);font-size:11px;margin-bottom:16px;font-style:italic">Trusted by 10,000+ Customers</div>
+          <div style="width:180px;height:2px;background:rgba(201,168,76,0.2);border-radius:2px;margin:0 auto 16px;overflow:hidden;position:relative">
+            <div style="position:absolute;top:0;left:0;width:60%;height:100%;background:linear-gradient(to right,#C9A84C,#E8C97A);border-radius:2px"></div>
+          </div>
+        </div>
+        <div class="splash-loader"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ONBOARD 1 ===== -->
+  <div class="screen" id="s-onboard1">
+    <div class="page-label">Screen 2 · Onboarding 1</div>
+    <div class="phone">
+      <div class="status-bar" style="background:#1A3A2A"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="onboard">
+        <div class="onboard-top">
+          <div>
+            <div class="onboard-illo2">
+              <i class="fa-solid fa-coins" style="color:#E8C97A;font-size:64px"></i>
+              <i class="fa-solid fa-ring" style="color:rgba(201,168,76,0.7);font-size:50px;margin-top:14px"></i>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:20px;justify-content:center">
+              <i class="fa-solid fa-gem" style="color:rgba(201,168,76,0.5);font-size:28px"></i>
+              <i class="fa-solid fa-star" style="color:rgba(201,168,76,0.4);font-size:22px;margin-top:4px"></i>
+              <i class="fa-solid fa-crown" style="color:rgba(201,168,76,0.6);font-size:32px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="onboard-bottom">
+          <div class="onboard-dots"><div class="odot active"></div><div class="odot"></div><div class="odot"></div></div>
+          <div class="onboard-title">Save Gold Every Month</div>
+          <div class="onboard-desc">Join monthly gold saving schemes and achieve your jewellery goals with ease. Flexible plans from ₹500/month.</div>
+          <button class="btn-primary">Get Started →</button>
+          <button class="btn-outline">Skip for now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ONBOARD 2 ===== -->
+  <div class="screen" id="s-onboard2">
+    <div class="page-label">Screen 3 · Onboarding 2</div>
+    <div class="phone">
+      <div class="status-bar" style="background:#1A1A2E"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="onboard">
+        <div class="onboard-top" style="background:linear-gradient(135deg,#1A1A2E,#2D2D44)">
+          <div style="text-align:center">
+            <div style="position:relative;display:inline-block">
+              <i class="fa-solid fa-mobile-screen-button" style="font-size:80px;color:rgba(201,168,76,0.9)"></i>
+              <div style="position:absolute;top:8px;right:-24px;background:rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;font-size:11px;color:#E8C97A;font-weight:600;white-space:nowrap">UPI ✓</div>
+              <div style="position:absolute;bottom:4px;left:-30px;background:rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;font-size:11px;color:#E8C97A;font-weight:600">Cards ✓</div>
+            </div>
+          </div>
+        </div>
+        <div class="onboard-bottom">
+          <div class="onboard-dots"><div class="odot"></div><div class="odot active"></div><div class="odot"></div></div>
+          <div class="onboard-title">Easy Installment Payments</div>
+          <div class="onboard-desc">Pay monthly installments through UPI, Credit/Debit Cards and Net Banking. Instant confirmation and receipts.</div>
+          <button class="btn-primary">Continue →</button>
+          <button class="btn-outline">Skip for now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ONBOARD 3 ===== -->
+  <div class="screen" id="s-onboard3">
+    <div class="page-label">Screen 4 · Onboarding 3</div>
+    <div class="phone">
+      <div class="status-bar" style="background:#1A5C3A"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="onboard">
+        <div class="onboard-top" style="background:linear-gradient(135deg,#0D3020,#1A5C3A)">
+          <div style="background:rgba(255,255,255,0.07);border-radius:20px;padding:20px;text-align:center;min-width:220px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;height:80px;margin-bottom:12px">
+              <div style="width:28px;background:linear-gradient(to top,#1A5C3A,#3D9968);border-radius:4px 4px 0 0;height:40%"></div>
+              <div style="width:28px;background:linear-gradient(to top,#C9A84C,#E8C97A);border-radius:4px 4px 0 0;height:60%"></div>
+              <div style="width:28px;background:linear-gradient(to top,#1A5C3A,#3D9968);border-radius:4px 4px 0 0;height:50%"></div>
+              <div style="width:28px;background:linear-gradient(to top,#C9A84C,#E8C97A);border-radius:4px 4px 0 0;height:80%"></div>
+              <div style="width:28px;background:linear-gradient(to top,#1A5C3A,#3D9968);border-radius:4px 4px 0 0;height:65%"></div>
+              <div style="width:28px;background:linear-gradient(to top,#C9A84C,#E8C97A);border-radius:4px 4px 0 0;height:100%"></div>
+            </div>
+            <div style="color:rgba(255,255,255,0.6);font-size:11px">Savings Progress</div>
+            <div style="color:#E8C97A;font-size:18px;font-weight:700;font-family:'Playfair Display',serif;margin-top:4px">78% Complete</div>
+          </div>
+        </div>
+        <div class="onboard-bottom">
+          <div class="onboard-dots"><div class="odot"></div><div class="odot"></div><div class="odot active"></div></div>
+          <div class="onboard-title">Track Your Savings</div>
+          <div class="onboard-desc">View scheme progress, digital receipts and maturity status anytime, anywhere on your phone.</div>
+          <button class="btn-primary">Start Saving Gold →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LOGIN ===== -->
+  <div class="screen" id="s-login">
+    <div class="page-label">Screen 5 · Login</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="login-screen">
+        <div class="login-top">
+          <div class="login-logo-sm"><i class="fa-solid fa-gem"></i></div>
+          <h3>Welcome Back</h3>
+          <p>Login to your BellWin account</p>
+        </div>
+        <div class="login-form">
+          <div class="form-group">
+            <label class="form-label">Mobile Number</label>
+            <div class="input-row">
+              <div class="form-input" style="width:60px;text-align:center;flex:none;color:var(--gray)">+91</div>
+              <input class="form-input focused" type="text" placeholder="98765 43210" style="flex:1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">OTP Verification</label>
+            <div class="input-row">
+              <input class="form-input" type="text" placeholder="Enter OTP" style="flex:1;letter-spacing:6px;font-size:18px;font-weight:700;text-align:center">
+              <button class="btn-otp">Send OTP</button>
+            </div>
+            <div style="font-size:11px;color:var(--gray);margin-top:6px;text-align:right">Resend in 0:42</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <div style="flex:1;height:3px;background:var(--gold);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-border);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-border);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-border);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-border);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-border);border-radius:2px"></div>
+          </div>
+          <button class="btn-primary" style="margin-top:16px">Login →</button>
+          <div class="divider"><div class="divider-line"></div><span>New Customer?</span><div class="divider-line"></div></div>
+          <button class="btn-link">✦ Register New Account</button>
+          <div style="text-align:center;margin-top:16px;color:var(--gray);font-size:11px">By continuing you agree to our <span style="color:var(--gold-dark);font-weight:600">Terms & Privacy Policy</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REGISTER ===== -->
+  <div class="screen" id="s-register">
+    <div class="page-label">Screen 6 · Registration</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="reg-screen">
+        <div class="reg-header">
+          <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+          <div><h3>Create Account</h3><p>Complete your registration</p></div>
+        </div>
+        <div style="padding:10px 16px 4px;display:flex;gap:0">
+          <div style="flex:1;text-align:center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--gold);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px">1</div>
+            <div style="font-size:10px;color:var(--gold);font-weight:600">Personal</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--gold);margin-top:14px"></div>
+          <div style="flex:1;text-align:center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--gold);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px">2</div>
+            <div style="font-size:10px;color:var(--gold);font-weight:600">Address</div>
+          </div>
+          <div style="flex:1;height:2px;background:var(--gray-border);margin-top:14px"></div>
+          <div style="flex:1;text-align:center">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-border);color:var(--gray);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px">3</div>
+            <div style="font-size:10px;color:var(--gray);font-weight:600">KYC</div>
+          </div>
+        </div>
+        <div class="reg-body">
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-user-circle"></i> Personal Information</div>
+            <div class="form-group-sm"><label class="form-label">Full Name</label><input class="form-input" placeholder="Priya Lakshmi" value="Priya Lakshmi"></div>
+            <div class="form-row">
+              <div class="form-group-sm"><label class="form-label">Mobile</label><input class="form-input" placeholder="+91 98765 43210"></div>
+              <div class="form-group-sm"><label class="form-label">Email</label><input class="form-input" placeholder="priya@email.com"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group-sm"><label class="form-label">Date of Birth</label><input class="form-input" placeholder="15/03/1990"></div>
+              <div class="form-group-sm"><label class="form-label">Gender</label>
+                <select class="form-input" style="appearance:none"><option>Female</option><option>Male</option><option>Other</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-location-dot"></i> Address</div>
+            <div class="form-group-sm"><label class="form-label">Address Line 1</label><input class="form-input" placeholder="House/Flat/Building"></div>
+            <div class="form-group-sm"><label class="form-label">Address Line 2</label><input class="form-input" placeholder="Street/Area"></div>
+            <div class="form-row">
+              <div class="form-group-sm"><label class="form-label">City</label><input class="form-input" placeholder="Chennai"></div>
+              <div class="form-group-sm"><label class="form-label">State</label><input class="form-input" placeholder="Tamil Nadu"></div>
+            </div>
+            <div class="form-group-sm"><label class="form-label">Pincode</label><input class="form-input" placeholder="600001" style="width:50%"></div>
+          </div>
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-id-card"></i> Identity Verification</div>
+            <div class="form-group-sm"><label class="form-label">Aadhaar Number</label><input class="form-input" placeholder="XXXX XXXX XXXX" style="letter-spacing:4px"></div>
+            <div class="form-group-sm"><label class="form-label">PAN Number</label><input class="form-input" placeholder="ABCDE1234F" style="text-transform:uppercase"></div>
+          </div>
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-heart"></i> Nominee Details</div>
+            <div class="form-group-sm"><label class="form-label">Nominee Name</label><input class="form-input" placeholder="Full Name"></div>
+            <div class="form-row">
+              <div class="form-group-sm"><label class="form-label">Relationship</label><input class="form-input" placeholder="Spouse"></div>
+              <div class="form-group-sm"><label class="form-label">Mobile</label><input class="form-input" placeholder="98765 43210"></div>
+            </div>
+          </div>
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-camera"></i> Profile Photo</div>
+            <div class="photo-upload">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Upload your photo</span>
+              <div style="font-size:11px;color:var(--gray)">JPG or PNG, max 2MB</div>
+            </div>
+          </div>
+          <button class="btn-primary" style="margin-bottom:24px">Complete Registration ✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOME DASHBOARD ===== -->
+  <div class="screen" id="s-home">
+    <div class="page-label">Screen 7 · Home Dashboard</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="home-screen">
+        <div class="home-header">
+          <div class="home-top-row">
+            <div>
+              <div class="home-greeting">Good Morning 🌅</div>
+              <div class="home-name">Priya Lakshmi</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">Member ID: BW-2024-00812</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="color:rgba(255,255,255,0.7);font-size:22px;cursor:pointer;position:relative">
+                <i class="fa-solid fa-bell"></i>
+                <div style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--red);border-radius:50%;font-size:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">3</div>
+              </div>
+              <div class="home-avatar">PL<div class="notif-badge">●</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="summary-cards">
+          <div class="summary-card gold-accent">
+            <div class="sc-label">Total Schemes</div>
+            <div class="sc-value">4</div>
+            <div class="sc-sub">2 Active · 2 Completed</div>
+          </div>
+          <div class="summary-card green-accent">
+            <div class="sc-label">Active Schemes</div>
+            <div class="sc-value">2</div>
+            <div class="sc-sub">Running smoothly</div>
+          </div>
+          <div class="summary-card red-accent">
+            <div class="sc-label">Due Amount</div>
+            <div class="sc-value">₹2,500</div>
+            <div class="sc-sub">Due: 15 Jun 2025</div>
+          </div>
+          <div class="summary-card blue-accent">
+            <div class="sc-label">Gold Rate Today</div>
+            <div class="sc-value" style="font-size:15px">₹6,842</div>
+            <div class="sc-sub">↑ +₹42 today</div>
+          </div>
+        </div>
+        <div class="home-section" style="margin-top:8px">
+          <div class="section-header"><h4>Quick Actions</h4></div>
+          <div class="quick-actions">
+            <div class="qa-item"><div class="qa-icon g1"><i class="fa-solid fa-credit-card"></i></div><div class="qa-label">Pay Now</div></div>
+            <div class="qa-item"><div class="qa-icon g2"><i class="fa-solid fa-layer-group"></i></div><div class="qa-label">My Schemes</div></div>
+            <div class="qa-item"><div class="qa-icon g3"><i class="fa-solid fa-receipt"></i></div><div class="qa-label">Receipts</div></div>
+            <div class="qa-item"><div class="qa-icon g4"><i class="fa-solid fa-shopping-bag"></i></div><div class="qa-label">Purchases</div></div>
+          </div>
+        </div>
+        <div style="padding:0 16px;margin-bottom:12px">
+          <div class="due-card">
+            <div class="due-icon">⏰</div>
+            <div class="due-text">
+              <h5>Installment Due Soon</h5>
+              <p>Golden Savings · ₹2,500 · 15 Jun</p>
+            </div>
+            <button class="btn-due-pay">Pay Now</button>
+          </div>
+        </div>
+        <div class="home-section" style="padding-top:0">
+          <div class="section-header"><h4>Recent Activity</h4><span>View All</span></div>
+          <div class="activity-item">
+            <div class="ai-icon paid"><i class="fa-solid fa-check"></i></div>
+            <div class="ai-text"><div class="ai-title">Payment Received</div><div class="ai-sub">Golden Savings · May 2025</div></div>
+            <div class="ai-amount" style="color:#15803D">₹2,500</div>
+          </div>
+          <div class="activity-item">
+            <div class="ai-icon scheme"><i class="fa-solid fa-star"></i></div>
+            <div class="ai-text"><div class="ai-title">New Scheme Enrolled</div><div class="ai-sub">Diamond Plan · Apr 2025</div></div>
+            <div class="ai-amount" style="color:#B45309">₹5,000</div>
+          </div>
+          <div class="activity-item">
+            <div class="ai-icon paid"><i class="fa-solid fa-check"></i></div>
+            <div class="ai-text"><div class="ai-title">Payment Received</div><div class="ai-sub">Diamond Plan · Apr 2025</div></div>
+            <div class="ai-amount" style="color:#15803D">₹5,000</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item"><i class="fa-solid fa-layer-group"></i><span>Schemes</span></div>
+        <div class="nav-item"><i class="fa-solid fa-credit-card"></i><span>Payments</span></div>
+        <div class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GOLD RATE ===== -->
+  <div class="screen" id="s-goldrate">
+    <div class="page-label">Screen 8 · Gold Rate</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div class="rate-screen">
+        <div class="rate-header">
+          <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+          <div><div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Live Gold Rates</div><div style="color:rgba(255,255,255,0.4);font-size:11px">Updated: Today 9:40 AM</div></div>
+        </div>
+        <div style="background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:0 16px 24px">
+          <div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:var(--r-lg);padding:20px;text-align:center">
+            <div style="color:rgba(255,255,255,0.5);font-size:12px;margin-bottom:6px">24K Gold · Per Gram (Chennai)</div>
+            <div style="font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:#E8C97A">₹6,842</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px">
+              <span style="color:#16A34A;font-size:13px;font-weight:600">▲ +₹42 (0.62%)</span>
+              <span style="color:rgba(255,255,255,0.3);font-size:12px">vs yesterday</span>
+            </div>
+          </div>
+        </div>
+        <div class="rate-cards">
+          <div class="rate-card">
+            <div class="rc-label light"><i class="fa-solid fa-circle" style="font-size:8px;color:var(--gold)"></i> 22K Gold / gram</div>
+            <div class="rc-price dark-text">₹6,272</div>
+            <div class="rc-change up">▲ +₹38</div>
+          </div>
+          <div class="rate-card">
+            <div class="rc-label light"><i class="fa-solid fa-circle" style="font-size:8px;color:#9CA3AF"></i> Silver / gram</div>
+            <div class="rc-price dark-text">₹84.50</div>
+            <div class="rc-change down">▼ −₹1.20</div>
+          </div>
+        </div>
+        <div style="padding:0 16px 8px">
+          <div style="background:#fff;border:1px solid var(--gray-border);border-radius:var(--r-md);padding:12px;display:flex;justify-content:space-between">
+            <div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Yesterday</div><div style="font-size:14px;font-weight:700;color:var(--dark);font-family:'Playfair Display',serif">₹6,800</div></div>
+            <div style="width:1px;background:var(--gray-border)"></div>
+            <div style="text-align:center"><div style="font-size:10px;color:var(--gray)">7-Day Avg</div><div style="font-size:14px;font-weight:700;color:var(--dark);font-family:'Playfair Display',serif">₹6,750</div></div>
+            <div style="width:1px;background:var(--gray-border)"></div>
+            <div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Monthly High</div><div style="font-size:14px;font-weight:700;color:var(--dark);font-family:'Playfair Display',serif">₹6,920</div></div>
+          </div>
+        </div>
+        <div class="chart-area">
+          <div style="font-size:14px;font-weight:600;color:var(--dark);margin-bottom:10px">Price History</div>
+          <div class="chart-tabs">
+            <div class="chart-tab active">Weekly</div>
+            <div class="chart-tab">Monthly</div>
+            <div class="chart-tab">3 Months</div>
+          </div>
+          <div class="mini-chart">
+            <div class="bar gold-bar" style="height:55%"></div>
+            <div class="bar gold-bar" style="height:62%"></div>
+            <div class="bar gold-bar" style="height:58%"></div>
+            <div class="bar gold-bar" style="height:70%"></div>
+            <div class="bar gold-bar" style="height:75%"></div>
+            <div class="bar gold-bar" style="height:68%"></div>
+            <div class="bar gold-bar active-bar" style="height:85%"></div>
+          </div>
+          <div class="chart-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+        </div>
+        <div style="height:16px"></div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item active"><i class="fa-solid fa-layer-group"></i><span>Schemes</span></div>
+        <div class="nav-item"><i class="fa-solid fa-credit-card"></i><span>Payments</span></div>
+        <div class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCHEMES ===== -->
+  <div class="screen" id="s-schemes">
+    <div class="page-label">Screen 9 · Scheme List</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:620px">
+        <div style="background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:36px 20px 20px">
+          <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:20px;font-weight:700">Gold Saving Schemes</div>
+          <div style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:4px">Choose your golden journey</div>
+          <div style="display:flex;gap:8px;margin-top:14px">
+            <div style="background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.4);color:#E8C97A;padding:5px 14px;border-radius:var(--r-full);font-size:11px;font-weight:600">All Plans</div>
+            <div style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:var(--r-full);font-size:11px;font-weight:600">Monthly</div>
+            <div style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:5px 14px;border-radius:var(--r-full);font-size:11px;font-weight:600">Quarterly</div>
+          </div>
+        </div>
+        <div style="padding-top:16px">
+          <div class="scheme-card">
+            <div class="scheme-badge"><i class="fa-solid fa-star" style="font-size:9px"></i> Most Popular</div>
+            <div class="scheme-name">Golden Savings Plan</div>
+            <div class="scheme-specs">
+              <div class="spec-box"><div class="spec-val">₹2,500</div><div class="spec-key">Monthly</div></div>
+              <div class="spec-box"><div class="spec-val">12 Mo</div><div class="spec-key">Duration</div></div>
+              <div class="spec-box"><div class="spec-val">1 Free</div><div class="spec-key">Bonus</div></div>
+            </div>
+            <div class="benefits-row">
+              <div class="benefit-tag">No Charges</div>
+              <div class="benefit-tag">Home Delivery</div>
+              <div class="benefit-tag">Gold Coins</div>
+            </div>
+            <button class="btn-enroll">Enroll Now →</button>
+          </div>
+          <div class="scheme-card" style="border-left:4px solid var(--gold)">
+            <div style="display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#1A1A2E;font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--r-full);margin-bottom:8px">✦ Premium</div>
+            <div class="scheme-name">Diamond Savings Plan</div>
+            <div class="scheme-specs">
+              <div class="spec-box"><div class="spec-val">₹5,000</div><div class="spec-key">Monthly</div></div>
+              <div class="spec-box"><div class="spec-val">24 Mo</div><div class="spec-key">Duration</div></div>
+              <div class="spec-box"><div class="spec-val">2 Free</div><div class="spec-key">Bonus</div></div>
+            </div>
+            <div class="benefits-row">
+              <div class="benefit-tag">Priority Service</div>
+              <div class="benefit-tag">Making Off</div>
+              <div class="benefit-tag">VIP Access</div>
+            </div>
+            <button class="btn-enroll">Enroll Now →</button>
+          </div>
+          <div class="scheme-card">
+            <div class="scheme-badge" style="background:linear-gradient(135deg,#E8F5EE,#C0E8D0);color:#1A5C3A">✦ Starter</div>
+            <div class="scheme-name">Silver Start Plan</div>
+            <div class="scheme-specs">
+              <div class="spec-box"><div class="spec-val">₹500</div><div class="spec-key">Monthly</div></div>
+              <div class="spec-box"><div class="spec-val">6 Mo</div><div class="spec-key">Duration</div></div>
+              <div class="spec-box"><div class="spec-val">1 Free</div><div class="spec-key">Bonus</div></div>
+            </div>
+            <div class="benefits-row">
+              <div class="benefit-tag">Easy EMI</div>
+              <div class="benefit-tag">No Lock-in</div>
+            </div>
+            <button class="btn-enroll">Enroll Now →</button>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item active"><i class="fa-solid fa-layer-group"></i><span>Schemes</span></div>
+        <div class="nav-item"><i class="fa-solid fa-credit-card"></i><span>Payments</span></div>
+        <div class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCHEME DETAIL ===== -->
+  <div class="screen" id="s-schemedetail">
+    <div class="page-label">Screen 10 · Scheme Detail</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:640px">
+        <div style="background:linear-gradient(160deg,#1A1A2E,#1A3A2A);padding:36px 20px 24px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+            <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+            <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Scheme Details</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border-radius:var(--r-lg);padding:16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div>
+                <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Golden Savings Plan</div>
+                <div style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:4px">BW-GS-2024-00812</div>
+              </div>
+              <div style="background:rgba(34,197,94,0.2);color:#4ADE80;font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--r-full)">Active</div>
+            </div>
+            <div style="margin-top:16px">
+              <div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.5);font-size:11px;margin-bottom:6px"><span>Progress</span><span>7 / 12 months</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:58%"></div></div>
+              <div style="text-align:right;color:#E8C97A;font-size:11px;font-weight:600;margin-top:4px">58% Complete</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:16px">
+          <div class="detail-grid">
+            <div class="detail-box"><div class="key">Joining Date</div><div class="val">01 Nov 2024</div></div>
+            <div class="detail-box"><div class="key">Maturity Date</div><div class="val highlight">01 Nov 2025</div></div>
+            <div class="detail-box"><div class="key">Monthly EMI</div><div class="val">₹2,500</div></div>
+            <div class="detail-box"><div class="key">Duration</div><div class="val">12 Months</div></div>
+            <div class="detail-box"><div class="key">Paid Amount</div><div class="val highlight">₹17,500</div></div>
+            <div class="detail-box"><div class="key">Remaining</div><div class="val">₹12,500</div></div>
+          </div>
+          <div style="background:linear-gradient(135deg,#FDF6E3,#F5E6C0);border:1px solid #F5E6C0;border-radius:var(--r-lg);padding:16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:12px;color:var(--gold-dark);font-weight:600">Maturity Amount</div>
+              <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--dark)">₹30,000</div>
+              <div style="font-size:11px;color:var(--gray);margin-top:2px">+ 1 Month Bonus</div>
+            </div>
+            <i class="fa-solid fa-trophy" style="font-size:40px;color:var(--gold)"></i>
+          </div>
+          <div class="btn-row">
+            <button class="btn-half btn-pay">Pay Installment</button>
+            <button class="btn-half btn-dl" style="border:1.5px solid var(--emerald)!important;color:var(--emerald);background:transparent">Download Agreement</button>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:14px;font-weight:600;color:var(--dark);margin-bottom:10px">Payment Timeline</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:50%;background:var(--emerald);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0"><i class="fa-solid fa-check"></i></div><div style="flex:1;font-size:12px;color:var(--dark)">Nov 2024 — ₹2,500 paid</div><div style="font-size:11px;color:var(--emerald);font-weight:600">Paid</div></div>
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:50%;background:var(--emerald);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0"><i class="fa-solid fa-check"></i></div><div style="flex:1;font-size:12px;color:var(--dark)">Dec–May 2025 — 6× ₹2,500</div><div style="font-size:11px;color:var(--emerald);font-weight:600">Paid</div></div>
+              <div style="display:flex;align-items:center;gap:10px"><div style="width:20px;height:20px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0"><i class="fa-solid fa-clock"></i></div><div style="flex:1;font-size:12px;color:var(--dark)">Jun 2025 — ₹2,500 due</div><div style="font-size:11px;color:var(--gold-dark);font-weight:600">Due</div></div>
+              <div style="display:flex;align-items:center;gap:10px;opacity:0.4"><div style="width:20px;height:20px;border-radius:50%;background:var(--gray-border);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:10px;flex-shrink:0">5</div><div style="flex:1;font-size:12px;color:var(--gray)">Jul–Nov 2025 — Remaining</div><div style="font-size:11px;color:var(--gray)">Pending</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PAYMENT ===== -->
+  <div class="screen" id="s-payment">
+    <div class="page-label">Screen 11 · Payment</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:640px">
+        <div style="background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:36px 20px 20px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+            <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Make Payment</div>
+          </div>
+        </div>
+        <div style="padding:16px">
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-file-invoice"></i> Payment Details</div>
+            <div class="form-group-sm"><label class="form-label">Membership Number</label><input class="form-input" value="BW-GS-2024-00812" readonly style="background:var(--gray-light);color:var(--gray)"></div>
+            <div class="form-row">
+              <div class="form-group-sm"><label class="form-label">Due Amount</label><input class="form-input" value="₹2,500" readonly style="background:var(--gray-light);color:var(--gray)"></div>
+              <div class="form-group-sm"><label class="form-label">Pay Amount</label><input class="form-input focused" value="₹2,500"></div>
+            </div>
+          </div>
+          <div class="section-card">
+            <div class="section-title"><i class="fa-solid fa-wallet"></i> Payment Method</div>
+            <div class="pay-method">
+              <div class="pm-card selected">
+                <span class="pm-icon">📱</span>
+                <div class="pm-label">UPI</div>
+                <div style="font-size:10px;color:var(--gray);margin-top:2px">GPay, PhonePe</div>
+              </div>
+              <div class="pm-card">
+                <span class="pm-icon">💳</span>
+                <div class="pm-label">Credit Card</div>
+                <div style="font-size:10px;color:var(--gray);margin-top:2px">Visa, Mastercard</div>
+              </div>
+              <div class="pm-card">
+                <span class="pm-icon">🏦</span>
+                <div class="pm-label">Debit Card</div>
+                <div style="font-size:10px;color:var(--gray);margin-top:2px">All Banks</div>
+              </div>
+              <div class="pm-card">
+                <span class="pm-icon">🌐</span>
+                <div class="pm-label">Net Banking</div>
+                <div style="font-size:10px;color:var(--gray);margin-top:2px">50+ Banks</div>
+              </div>
+            </div>
+            <div style="background:var(--gold-pale);border:1px solid #F5E6C0;border-radius:var(--r-md);padding:12px">
+              <label class="form-label" style="display:block;margin-bottom:8px">UPI ID / VPA</label>
+              <div class="input-row">
+                <input class="form-input focused" placeholder="yourname@upi" style="flex:1;background:#fff">
+                <button class="btn-otp" style="background:var(--gold);border:none;color:#1A1A2E">Verify</button>
+              </div>
+            </div>
+          </div>
+          <div style="background:#fff;border-radius:var(--r-lg);padding:16px;border:1px solid var(--gray-border);margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--gray)">Installment Amount</span><span style="font-size:13px;font-weight:600">₹2,500</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--gray)">Processing Fee</span><span style="font-size:13px;font-weight:600;color:var(--emerald)">FREE</span></div>
+            <div style="border-top:1px dashed var(--gray-border);padding-top:10px;display:flex;justify-content:space-between"><span style="font-size:14px;font-weight:700;color:var(--dark)">Total Payable</span><span style="font-size:16px;font-weight:700;color:var(--dark);font-family:'Playfair Display',serif">₹2,500</span></div>
+          </div>
+          <button class="btn-primary">🔒 Pay ₹2,500 Securely</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RECEIPT ===== -->
+  <div class="screen" id="s-receipt">
+    <div class="page-label">Screen 12 · Receipt</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:640px">
+        <div style="background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:36px 20px 20px;display:flex;align-items:center;gap:12px">
+          <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+          <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Payment Receipt</div>
+        </div>
+        <div style="padding:16px">
+          <div class="receipt-card">
+            <div class="receipt-top">
+              <div class="receipt-check"><i class="fa-solid fa-check"></i></div>
+              <h3>Payment Successful!</h3>
+              <p>Transaction completed on 04 Jun 2025</p>
+              <div class="receipt-amount">₹2,500</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:12px">Golden Savings Plan — June Installment</div>
+            </div>
+            <div class="receipt-body">
+              <div class="receipt-row"><div class="key">Receipt Number</div><div class="val">BW-RCP-2025-04872</div></div>
+              <div class="receipt-row"><div class="key">Membership No.</div><div class="val">BW-GS-2024-00812</div></div>
+              <div class="receipt-row"><div class="key">Scheme Name</div><div class="val">Golden Savings Plan</div></div>
+              <div class="receipt-row"><div class="key">Payment Date</div><div class="val">04 Jun 2025, 9:40 AM</div></div>
+              <div class="receipt-row"><div class="key">Payment Method</div><div class="val">UPI — GPay</div></div>
+              <div class="receipt-row"><div class="key">Transaction ID</div><div class="val" style="font-size:11px">TXN4872628374</div></div>
+              <div class="receipt-row" style="border-bottom:none"><div class="key">Status</div><div class="val"><span class="status-pill"><i class="fa-solid fa-circle-check" style="font-size:10px"></i> Success</span></div></div>
+            </div>
+            <div style="border-top:1px dashed var(--gray-border);margin:0 16px;padding:12px 0;display:flex;justify-content:space-between;font-size:13px">
+              <span style="color:var(--gray)">Installments Paid</span>
+              <span style="font-weight:700;color:var(--emerald)">8 of 12 months ✓</span>
+            </div>
+          </div>
+          <div class="receipt-actions" style="margin-top:14px;padding:0">
+            <button class="btn-receipt btn-pdf"><i class="fa-solid fa-download"></i> Download PDF</button>
+            <button class="btn-receipt btn-wa"><i class="fa-brands fa-whatsapp"></i> Share</button>
+          </div>
+          <button class="btn-outline" style="margin-top:10px;color:var(--emerald);border-color:var(--emerald)">View All Receipts</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PURCHASES ===== -->
+  <div class="screen" id="s-purchases">
+    <div class="page-label">Screen 13 · Purchase History</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:620px">
+        <div style="background:linear-gradient(135deg,#1A1A2E,#1A3A2A);padding:36px 20px 20px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+            <div><div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Purchase History</div><div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">3 purchases this year</div></div>
+          </div>
+        </div>
+        <div style="padding:16px">
+          <div class="purchase-item">
+            <div class="product-img">💍</div>
+            <div class="purchase-info">
+              <div class="purchase-name">Kundan Necklace Set</div>
+              <div class="purchase-sub">Bill: BW-INV-2025-00142</div>
+              <div class="purchase-weight">22K · 18.5g</div>
+            </div>
+            <div class="purchase-right">
+              <div class="purchase-amount">₹1,14,622</div>
+              <div class="purchase-date">15 Mar 2025</div>
+              <div style="background:var(--emerald-pale);color:var(--emerald);font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-full);margin-top:4px;display:inline-block">Delivered</div>
+            </div>
+          </div>
+          <div class="purchase-item">
+            <div class="product-img">📿</div>
+            <div class="purchase-info">
+              <div class="purchase-name">Gold Bangles (Pair)</div>
+              <div class="purchase-sub">Bill: BW-INV-2025-00089</div>
+              <div class="purchase-weight">22K · 24.2g</div>
+            </div>
+            <div class="purchase-right">
+              <div class="purchase-amount">₹1,50,000</div>
+              <div class="purchase-date">20 Jan 2025</div>
+              <div style="background:var(--emerald-pale);color:var(--emerald);font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-full);margin-top:4px;display:inline-block">Delivered</div>
+            </div>
+          </div>
+          <div class="purchase-item">
+            <div class="product-img" style="font-size:20px">🥇</div>
+            <div class="purchase-info">
+              <div class="purchase-name">Gold Coin 8g</div>
+              <div class="purchase-sub">Bill: BW-INV-2024-00654</div>
+              <div class="purchase-weight">24K · 8.0g</div>
+            </div>
+            <div class="purchase-right">
+              <div class="purchase-amount">₹54,736</div>
+              <div class="purchase-date">10 Nov 2024</div>
+              <div style="background:var(--emerald-pale);color:var(--emerald);font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-full);margin-top:4px;display:inline-block">Delivered</div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#FDF6E3,#F5E6C0);border:1px solid #F5E6C0;border-radius:var(--r-lg);padding:16px;text-align:center">
+            <div style="font-size:12px;color:var(--gold-dark);font-weight:600;margin-bottom:4px">Total Purchase Value</div>
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--dark)">₹3,19,358</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">Across 3 purchases · 50.7g gold</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item"><i class="fa-solid fa-layer-group"></i><span>Schemes</span></div>
+        <div class="nav-item active"><i class="fa-solid fa-credit-card"></i><span>Payments</span></div>
+        <div class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MATURITY ===== -->
+  <div class="screen" id="s-maturity">
+    <div class="page-label">Screen 14 · Maturity</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:640px">
+        <div style="background:linear-gradient(160deg,#1A1A2E,#1A3A2A);padding:36px 20px 24px;display:flex;align-items:center;gap:12px">
+          <div class="back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+          <div style="color:#E8C97A;font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Scheme Matured!</div>
+        </div>
+        <div class="maturity-hero">
+          <div class="maturity-badge"><i class="fa-solid fa-trophy"></i> Congratulations!</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:4px">Your Golden Savings Plan is Ready</div>
+          <div class="maturity-amount">₹32,500</div>
+          <div class="maturity-sub">Scheme Amount + 1 Month Bonus</div>
+          <div style="display:flex;justify-content:space-around;margin-top:20px;background:rgba(255,255,255,0.06);border-radius:var(--r-md);padding:12px">
+            <div style="text-align:center"><div style="color:rgba(255,255,255,0.5);font-size:10px;margin-bottom:3px">Scheme</div><div style="color:#E8C97A;font-size:14px;font-weight:700;font-family:'Playfair Display',serif">₹30,000</div></div>
+            <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+            <div style="text-align:center"><div style="color:rgba(255,255,255,0.5);font-size:10px;margin-bottom:3px">Bonus</div><div style="color:#4ADE80;font-size:14px;font-weight:700;font-family:'Playfair Display',serif">₹2,500</div></div>
+            <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+            <div style="text-align:center"><div style="color:rgba(255,255,255,0.5);font-size:10px;margin-bottom:3px">Total</div><div style="color:#E8C97A;font-size:14px;font-weight:700;font-family:'Playfair Display',serif">₹32,500</div></div>
+          </div>
+        </div>
+        <div style="padding:16px">
+          <div style="font-size:14px;font-weight:600;color:var(--dark);margin-bottom:12px">Redeem Your Benefits</div>
+          <div class="maturity-options">
+            <div class="maturity-opt featured">
+              <i class="fa-solid fa-gem"></i>
+              <span>Jewellery Purchase</span>
+              <div style="font-size:10px;color:var(--gold-dark);margin-top:4px">Most popular</div>
+            </div>
+            <div class="maturity-opt">
+              <i class="fa-solid fa-coins"></i>
+              <span>Gold Coin Purchase</span>
+            </div>
+            <div class="maturity-opt">
+              <i class="fa-solid fa-building-columns"></i>
+              <span>Refund to Bank</span>
+            </div>
+            <div class="maturity-opt">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Renew Scheme</span>
+            </div>
+          </div>
+          <button class="btn-primary">Redeem ₹32,500 →</button>
+          <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--gray)">Offer valid till 30 Jun 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE ===== -->
+  <div class="screen" id="s-profile">
+    <div class="page-label">Screen 15 · Profile</div>
+    <div class="phone">
+      <div class="status-bar"><span class="time">9:41</span><div class="status-icons"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-battery-full"></i></div></div>
+      <div style="background:var(--gray-light);min-height:680px">
+        <div class="profile-hero">
+          <div class="profile-avatar-lg">PL</div>
+          <div class="profile-name">Priya Lakshmi</div>
+          <div class="profile-id">Member ID: BW-2024-00812</div>
+          <div style="display:flex;gap:20px;justify-content:center;margin-top:16px">
+            <div style="text-align:center"><div style="color:#E8C97A;font-size:18px;font-weight:700;font-family:'Playfair Display',serif">4</div><div style="color:rgba(255,255,255,0.4);font-size:10px">Schemes</div></div>
+            <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+            <div style="text-align:center"><div style="color:#E8C97A;font-size:18px;font-weight:700;font-family:'Playfair Display',serif">3</div><div style="color:rgba(255,255,255,0.4);font-size:10px">Purchases</div></div>
+            <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+            <div style="text-align:center"><div style="color:#4ADE80;font-size:18px;font-weight:700;font-family:'Playfair Display',serif">Gold</div><div style="color:rgba(255,255,255,0.4);font-size:10px">Member</div></div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="info-card">
+            <div style="font-size:13px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Personal Info</div>
+            <div class="info-row">
+              <div class="info-icon"><i class="fa-solid fa-user"></i></div>
+              <div class="info-text"><div class="label">Full Name</div><div class="value">Priya Lakshmi</div></div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+              <div class="info-text"><div class="label">Mobile</div><div class="value">+91 98765 43210</div></div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div class="info-text"><div class="label">Email</div><div class="value">priya@email.com</div></div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="info-text"><div class="label">Address</div><div class="value">Anna Nagar, Chennai — 600040</div></div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon"><i class="fa-solid fa-id-card"></i></div>
+              <div class="info-text"><div class="label">Aadhaar</div><div class="value">XXXX XXXX 4521</div></div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon" style="background:var(--gold-pale)"><i class="fa-solid fa-fingerprint" style="color:var(--gold-dark)"></i></div>
+              <div class="info-text"><div class="label">PAN</div><div class="value">ABCDE1234F</div></div>
+            </div>
+          </div>
+          <button class="action-btn"><i class="fa-solid fa-pen-to-square lead"></i><span>Edit Profile</span><i class="fa-solid fa-chevron-right arrow"></i></button>
+          <button class="action-btn"><i class="fa-solid fa-lock lead"></i><span>Change Password</span><i class="fa-solid fa-chevron-right arrow"></i></button>
+          <button class="action-btn"><i class="fa-solid fa-bell lead"></i><span>Notification Settings</span><i class="fa-solid fa-chevron-right arrow"></i></button>
+          <button class="action-btn"><i class="fa-solid fa-headset lead"></i><span>Customer Support</span><i class="fa-solid fa-chevron-right arrow"></i></button>
+          <button class="action-btn danger"><i class="fa-solid fa-right-from-bracket lead"></i><span>Logout</span><i class="fa-solid fa-chevron-right arrow"></i></button>
+          <div style="text-align:center;padding:12px 0 20px;font-size:11px;color:var(--gray)">BellWin Chits Jewellery CRM v2.1.0<br><span style="color:var(--gold-dark);font-weight:600">© 2025 BellWin Chits Pvt. Ltd.</span></div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item"><i class="fa-solid fa-layer-group"></i><span>Schemes</span></div>
+        <div class="nav-item"><i class="fa-solid fa-credit-card"></i><span>Payments</span></div>
+        <div class="nav-item active"><i class="fa-solid fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+  const target = document.getElementById('s-' + id);
+  if (target) target.classList.add('visible');
+  document.querySelectorAll('.nav-pill').forEach((p, i) => {
+    const ids = ['splash','onboard1','onboard2','onboard3','login','register','home','goldrate','schemes','schemedetail','payment','receipt','purchases','maturity','profile'];
+    p.classList.toggle('active', ids[i] === id);
+  });
+}
+</script>
+</body>
+</html>
